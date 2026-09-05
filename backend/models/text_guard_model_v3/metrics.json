@@ -1,0 +1,122 @@
+{
+  "best_model": {
+    "classifier": "linear_svm",
+    "C": 0.5,
+    "class_weight": "balanced"
+  },
+  "evaluation": {
+    "claimshield_v2_heldout": {
+      "accuracy": 0.8733624454148472,
+      "precision": 1.0,
+      "recall": 0.7456140350877193,
+      "f1": 0.8542713567839196,
+      "roc_auc": 0.9637681159420289,
+      "confusion_matrix": [
+        [
+          115,
+          0
+        ],
+        [
+          29,
+          85
+        ]
+      ],
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.2543859649122807
+    },
+    "official_neuralchemy_test": {
+      "accuracy": 0.9532908704883227,
+      "precision": 0.9487632508833922,
+      "recall": 0.9728260869565217,
+      "f1": 0.960644007155635,
+      "roc_auc": 0.9946627647714604,
+      "confusion_matrix": [
+        [
+          361,
+          29
+        ],
+        [
+          15,
+          537
+        ]
+      ],
+      "false_positive_rate": 0.07435897435897436,
+      "false_negative_rate": 0.02717391304347826
+    },
+    "insurance_eval": {
+      "accuracy": 0.82,
+      "precision": 1.0,
+      "recall": 0.64,
+      "f1": 0.7804878048780488,
+      "roc_auc": 0.9688,
+      "confusion_matrix": [
+        [
+          100,
+          0
+        ],
+        [
+          36,
+          64
+        ]
+      ],
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 0.36
+    },
+    "four_previous_benign": {
+      "predictions": [
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "new_benign_20": {
+      "predictions": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ]
+    },
+    "new_malicious_20": {
+      "predictions": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1
+      ]
+    }
+  }
+}

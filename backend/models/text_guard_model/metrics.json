@@ -1,0 +1,75 @@
+{
+  "dataset": "neuralchemy/Prompt-injection-dataset",
+  "configuration": "core",
+  "best_model": "linear_svm",
+  "validation": {
+    "logistic_regression": {
+      "accuracy": 0.9458023379383634,
+      "precision": 0.9289520426287744,
+      "recall": 0.9794007490636704,
+      "f1_score": 0.9535095715587967,
+      "confusion_matrix": [
+        [
+          367,
+          40
+        ],
+        [
+          11,
+          523
+        ]
+      ],
+      "roc_auc": 0.9924219418601441
+    },
+    "linear_svm": {
+      "accuracy": 0.9596174282678002,
+      "precision": 0.9525547445255474,
+      "recall": 0.9775280898876404,
+      "f1_score": 0.9648798521256932,
+      "confusion_matrix": [
+        [
+          381,
+          26
+        ],
+        [
+          12,
+          522
+        ]
+      ],
+      "roc_auc": 0.9921458741683462
+    },
+    "random_forest": {
+      "accuracy": 0.953241232731137,
+      "precision": 0.9406474820143885,
+      "recall": 0.9794007490636704,
+      "f1_score": 0.9596330275229358,
+      "confusion_matrix": [
+        [
+          374,
+          33
+        ],
+        [
+          11,
+          523
+        ]
+      ],
+      "roc_auc": 0.9905768894532939
+    }
+  },
+  "test": {
+    "accuracy": 0.9522292993630573,
+    "precision": 0.9486725663716814,
+    "recall": 0.9710144927536232,
+    "f1_score": 0.9597135183527306,
+    "confusion_matrix": [
+      [
+        361,
+        29
+      ],
+      [
+        16,
+        536
+      ]
+    ],
+    "roc_auc": 0.9945187662578967
+  }
+}
