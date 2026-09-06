@@ -12,7 +12,7 @@ function Confidence({ value }) { return <div className="confidence"><div><span>{
 function Score({ value }) { return <div className="confidence"><div><span>Model Score</span><strong>{Number(value ?? 0).toFixed(3)}</strong></div><small>Linear SVM score; not a calibrated probability.</small></div> }
 function GuardCard({ className, title, icon, children }) { return <section className={`guard-panel ${className}`}><div className="card-title"><span className="card-icon">{icon}</span><h3>{title}</h3></div>{children}</section> }
 
-function AnalysisResults({ result }) {
+export function AnalysisResults({ result }) {
   const decision = result.cross_modal_decision || result.final_decision || {}
   const suspicious = decision.route === 'HUMAN_REVIEW'
   const image = result.image_guard

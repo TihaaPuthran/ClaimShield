@@ -19,6 +19,9 @@ export async function submitClaim(formData) {
     },
   )
 
+  sessionStorage.setItem('claimshield-analysis', JSON.stringify(response.data))
+  window.history.pushState({}, '', `/claims/${encodeURIComponent(response.data.claim_id)}/analysis`)
+  window.dispatchEvent(new PopStateEvent('popstate'))
   return response.data
 }
 
