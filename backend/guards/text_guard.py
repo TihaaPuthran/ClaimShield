@@ -1,5 +1,6 @@
 """Inference interface for the trained ML-based Text Guard."""
 import logging
+import os
 from functools import lru_cache
 from pathlib import Path
 
@@ -23,9 +24,10 @@ def analyze_text(text: str):
         raise ValueError("Text must not be empty")
     model, vectorizer = _load_artifacts()
     features = vectorizer.transform([text])
-    prediction = int(model.predict(features)[0])
     decision_score = float(model.decision_function(features)[0]) if hasattr(model, "decision_function") else None
+    threshold = float(os.getenv("TEXT_GUARD_THRESHOLD", "0.50"))
+    prediction = int(decision_score >= threshold) if decision_score is not None else int(model.predict(features)[0])
     malicious = prediction == 1
     classification = "PROMPT_INJECTION" if malicious else "BENIGN"
     logger.info("[TextGuard] prediction=%s classification=%s decision_score=%s", prediction, classification, decision_score)
-    return {"source": "text", "provided": True, "prediction": prediction, "classification": classification, "decision_score": decision_score, "score_type": "linear_svm_decision_score", "confidence": None, "evidence_text": text, "detector": "TF-IDF + Linear SVM", "is_prompt_injection": malicious, "explanation": "The trained Text Guard detected prompt-injection-like language in the claim narrative." if malicious else "The trained Text Guard classified the claim narrative as benign."}
+    return {"source": "text", "provided": True, "prediction": prediction, "classification": classification, "decision_score": decision_score, "decision_threshold": threshold, "score_type": "linear_svm_decision_score", "confidence": None, "evidence_text": text, "detector": "TF-IDF + Linear SVM", "is_prompt_injection": malicious, "explanation": "The trained Text Guard detected prompt-injection-like language in the claim narrative." if malicious else "The trained Text Guard classified the claim narrative as benign."}
