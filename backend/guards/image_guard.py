@@ -1,17 +1,17 @@
 """OCR-only image guard; it reuses the trained text guard and no image model."""
 import os
-import shutil
 import time
 from pathlib import Path
 
 from guards.text_guard import analyze_text
+from services.ocr_service import get_tesseract_path
 
 
 def _configure_tesseract(pytesseract):
     configured = os.getenv("TESSERACT_CMD")
     if configured:
         pytesseract.pytesseract.tesseract_cmd = configured
-    elif (system_tesseract := shutil.which("tesseract")):
+    elif (system_tesseract := get_tesseract_path()):
         pytesseract.pytesseract.tesseract_cmd = system_tesseract
 
 

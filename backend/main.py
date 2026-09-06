@@ -3,7 +3,7 @@ import logging
 import time
 import hashlib
 import os
-import shutil
+import subprocess
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -18,6 +18,7 @@ from guards.media_authenticity_guard import analyze_image_authenticity, analyze_
 from services.groq_analysis import generate_security_explanation
 from services.database_service import get_user_claim_history, get_recent_user_claims, save_claim
 from guards.repeat_claim_guard import analyze_repeat_claim
+from services.ocr_service import get_tesseract_path, is_ocr_available
 
 app = FastAPI()
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
@@ -30,6 +31,18 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+@app.on_event("startup")
+def check_ocr():
+    path = get_tesseract_path()
+    logger.info("[OCR] Checking Tesseract...")
+    logger.info("[OCR] Tesseract path: %s", path or "unavailable")
+    logger.info("[OCR] OCR available: %s", bool(path))
+    if path:
+        try:
+            version = subprocess.run([path, "--version"], capture_output=True, text=True, timeout=5, check=False).stdout.splitlines()[0]
+            logger.info("[OCR] %s", version)
+        except OSError:
+            pass
 UPLOADS_DIR = Path(__file__).parent / "uploads"
 UPLOADS_DIR.mkdir(exist_ok=True)
 
@@ -45,7 +58,8 @@ def root():
 
 @app.get("/health")
 def health():
-    return {"status": "healthy", "system": "ClaimShield", "ocr_available": bool(shutil.which("tesseract"))}
+    available = is_ocr_available()
+    return {"status": "healthy" if available else "degraded", "system": "ClaimShield", "ocr": {"available": available, "engine": "tesseract", **({"path": get_tesseract_path()} if available else {})}}
 
 
 @app.post("/guards/text/analyze")
