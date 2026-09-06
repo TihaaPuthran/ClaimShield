@@ -44,7 +44,9 @@ def _ocr_frame(frame):
 
 def analyze_image(path):
     ocr_text, ocr_error = _ocr(Path(path))
-    if not ocr_text:
-        return {"source": "image", "provided": True, "ocr_text": "", "ocr_error": ocr_error, "prediction": 0, "classification": "BENIGN", "confidence": 0.0, "is_prompt_injection": False, "detector": "Tesseract OCR + Text Guard"}
+    if not ocr_text and not ocr_error:
+        return {"source": "image", "provided": True, "ocr_status": "SUCCESS", "ocr_text": "", "ocr_error": "", "prediction": None, "classification": "NO_TEXT_DETECTED", "confidence": None, "is_prompt_injection": False, "detector": "Tesseract OCR + Text Guard"}
+    if ocr_error:
+        return {"source": "image", "provided": True, "ocr_status": "UNAVAILABLE", "ocr_text": "", "ocr_error": ocr_error, "prediction": None, "classification": "UNDETERMINED", "confidence": None, "is_prompt_injection": None, "detector": "Tesseract OCR + Text Guard"}
     result = analyze_text(ocr_text)
-    return {"source": "image", "provided": True, "ocr_text": ocr_text, "ocr_error": "", "prediction": result["prediction"], "classification": result["classification"], "confidence": result["confidence"], "is_prompt_injection": result["prediction"] == 1, "detector": "Tesseract OCR + Text Guard"}
+    return {"source": "image", "provided": True, "ocr_status": "AVAILABLE", "ocr_text": ocr_text, "ocr_error": "", "prediction": result["prediction"], "classification": result["classification"], "decision_score": result.get("decision_score"), "confidence": None, "is_prompt_injection": result["prediction"] == 1, "detector": "Tesseract OCR + Text Guard"}

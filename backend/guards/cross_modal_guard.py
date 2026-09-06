@@ -7,7 +7,8 @@ def build_security_evidence(text_guard, image_guard, video_guard, temporal_analy
     image_synthetic = bool(image_authenticity and image_authenticity.get("synthetic_media_detected")); video_synthetic = bool(video_authenticity and video_authenticity.get("synthetic_media_detected"))
     if image_synthetic: triggered.append("image_authenticity")
     if video_synthetic: triggered.append("video_authenticity")
-    return {"ai_security": {"prompt_injection_detected": any(name in triggered for name in ("text_guard", "image_guard", "temporal_guard")), "triggered_guards": [name for name in triggered if name in ("text_guard", "image_guard", "temporal_guard")]}, "fraud_risk": {"synthetic_image_detected": image_synthetic, "synthetic_video_detected": video_synthetic, "image_authenticity": image_authenticity, "video_authenticity": video_authenticity, "evidence_authenticity_flag": image_synthetic or video_synthetic}, "security_flag": bool(triggered), "triggered_guards": triggered, "deterministic_route": "HUMAN_REVIEW" if triggered else "CONTINUE"}
+    incomplete = any(result and result.get("ocr_status") == "UNAVAILABLE" for _, result in results)
+    return {"ai_security": {"prompt_injection_detected": any(name in triggered for name in ("text_guard", "image_guard", "temporal_guard")), "triggered_guards": [name for name in triggered if name in ("text_guard", "image_guard", "temporal_guard")]}, "fraud_risk": {"synthetic_image_detected": image_synthetic, "synthetic_video_detected": video_synthetic, "image_authenticity": image_authenticity, "video_authenticity": video_authenticity, "evidence_authenticity_flag": image_synthetic or video_synthetic}, "security_flag": bool(triggered), "analysis_incomplete": incomplete, "triggered_guards": triggered, "deterministic_route": "HUMAN_REVIEW" if triggered else "CONTINUE"}
 
 
 def aggregate(text_result, image_result, temporal_result, llm_result=None):

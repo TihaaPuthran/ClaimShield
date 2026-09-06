@@ -3,6 +3,7 @@ import logging
 import time
 import hashlib
 import os
+import shutil
 
 from fastapi import FastAPI, File, Form, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -44,7 +45,7 @@ def root():
 
 @app.get("/health")
 def health():
-    return {"status": "healthy", "system": "ClaimShield"}
+    return {"status": "healthy", "system": "ClaimShield", "ocr_available": bool(shutil.which("tesseract"))}
 
 
 @app.post("/guards/text/analyze")
