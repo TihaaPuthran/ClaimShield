@@ -1,0 +1,39 @@
+version: "1"
+
+projects:
+  - name: claimshield
+    environments:
+      - name: Production
+        services:
+          - type: web
+            name: ClaimShield
+            runtime: docker
+            repo: https://github.com/TihaaPuthran/ClaimShield
+            plan: free
+            region: singapore
+            rootDir: backend
+            dockerfilePath: Dockerfile
+
+            envVars:
+              - key: ALLOWED_ORIGINS
+                sync: false
+
+              - key: REPEAT_CLAIM_WINDOW_DAYS
+                sync: false
+
+              - key: SUPABASE_KEY
+                sync: false
+
+              - key: SUPABASE_URL
+                sync: false
+
+              - key: GROQ_MODEL
+                sync: false
+
+              - key: GROQ_API_KEY
+                sync: false
+
+              - key: TESSERACT_CMD
+                value: /usr/bin/tesseract
+
+            autoDeployTrigger: commit
