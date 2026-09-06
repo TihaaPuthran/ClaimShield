@@ -49,4 +49,4 @@ def analyze_image(path):
     if ocr_error:
         return {"source": "image", "provided": True, "ocr_status": "UNAVAILABLE", "ocr_text": "", "ocr_error": ocr_error, "prediction": None, "classification": "UNDETERMINED", "confidence": None, "is_prompt_injection": None, "detector": "Tesseract OCR + Text Guard"}
     result = analyze_text(ocr_text)
-    return {"source": "image", "provided": True, "ocr_status": "AVAILABLE", "ocr_text": ocr_text, "ocr_error": "", "prediction": result["prediction"], "classification": result["classification"], "decision_score": result.get("decision_score"), "confidence": None, "is_prompt_injection": result["prediction"] == 1, "detector": "Tesseract OCR + Text Guard"}
+    return {"source": "image", "provided": True, "ocr_status": "SUCCESS", "ocr_text": ocr_text, "ocr_error": "", "prediction": result["prediction"], "classification": result["classification"], "decision_score": result.get("decision_score"), "confidence": None, "is_prompt_injection": result["prediction"] == 1, "detector": "Tesseract OCR + Text Guard"}
